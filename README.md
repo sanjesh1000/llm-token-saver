@@ -1,6 +1,6 @@
 # Distill
 
-A lightweight, zero-dependency Python CLI that distills your codebase into a single, compressed, LLM-friendly context file — so you spend fewer tokens (and less money/context window) feeding your project to **Claude Code**, **GitHub Copilot Chat**, **Kiro**, or any other AI assistant.
+A lightweight, zero-dependency Python CLI that distills your codebase into a single, compressed, LLM-friendly context file — so you spend fewer tokens (and less money/context window) feeding your project to **Claude Code**, **GitHub Copilot Chat**, **Cursor**, **Kiro**, or any other AI assistant.
 
 It strips comments, collapses whitespace, optionally erases TypeScript type annotations, skips binaries/lockfiles/build output, and wraps everything in clean `<file path="...">` tags that LLMs parse natively — plus it tells you exactly how many tokens you saved.
 
@@ -237,6 +237,31 @@ function add(a, b) {
    `python3 distill.py` whenever the codebase changes significantly.
    ```
 4. Kiro automatically loads everything in `.kiro/steering/` into every new session in that workspace — no extra step needed per-session.
+
+### Cursor
+
+Cursor's current approach (as of 2026) is `.cursor/rules/*.mdc` files. The older single `.cursorrules` file is deprecated but still works on older Cursor versions.
+
+1. Run `python3 distill.py` — generates `context-bundle.xml`.
+2. Create the rules directory: `mkdir -p .cursor/rules`.
+3. Create a rule file, e.g. `.cursor/rules/context-bundle.mdc`, with YAML frontmatter + instructions:
+   ```markdown
+   ---
+   description: "Compressed codebase context bundle"
+   alwaysApply: true
+   globs:
+   ---
+   # Project Context
+   A compressed, up-to-date snapshot of this codebase lives in
+   context-bundle.xml at the project root. Reference it for broad
+   codebase understanding instead of scanning every file individually.
+   Regenerate it with `python3 distill.py` if it looks stale.
+   ```
+4. Cursor picks up `.mdc` files in `.cursor/rules/` automatically — no restart needed, and `alwaysApply: true` means it's injected into every chat/agent session in that project.
+5. For a one-off task instead of always-on context, skip the rule file and just `@file` it directly in chat:
+   ```
+   @context-bundle.xml Refactor the auth module to use JWT.
+   ```
 
 ### One-click VS Code Task
 
