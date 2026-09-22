@@ -1,0 +1,43 @@
+{
+  "excludePatterns": [
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.next/**",
+    "**/.venv/**",
+    "**/__pycache__/**",
+    "**/coverage/**",
+    "**/*.min.js",
+    "**/*.min.css",
+    "**/*.map",
+    "**/*.lock",
+    "**/package-lock.json",
+    "**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif", "**/*.svg",
+    "**/*.pdf", "**/*.zip",
+    "**/tests/fixtures/**",
+    "**/*.generated.ts"
+  ],
+  "compressMode": {
+    "stripComments": true,
+    "stripWhitespace": true,
+    "stripTypes": false
+  },
+  "maxFileSizeBytes": 150000,
+  "priorityFiles": [
+    "architecture.md",
+    "README.md",
+    "src/index.ts",
+    "src/schema.prisma",
+    "src/main.py"
+  ],
+  "includeExtensions": [
+    ".js", ".jsx", ".ts", ".tsx",
+    ".py",
+    ".json", ".yaml", ".yml",
+    ".md",
+    ".sql", ".prisma"
+  ],
+  "outputFile": "context-bundle.xml",
+  "reportFile": "token-savings-report.md"
+}
