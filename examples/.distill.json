@@ -16,7 +16,17 @@
     "**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif", "**/*.svg",
     "**/*.pdf", "**/*.zip",
     "**/tests/fixtures/**",
-    "**/*.generated.ts"
+    "**/*.generated.ts",
+    "**/.cursor/**",
+    "**/.cursorrules",
+    "**/.kiro/**",
+    "**/target/**",
+    "**/.gradle/**",
+    "**/*.class",
+    "**/*.jar",
+    "**/*.war",
+    "**/dependency-reduced-pom.xml",
+    "**/*.tsbuildinfo"
   ],
   "compressMode": {
     "stripComments": true,
@@ -28,14 +38,18 @@
     "architecture.md",
     "README.md",
     "src/index.ts",
+    "src/App.tsx",
     "src/schema.prisma",
-    "src/main.py"
+    "src/main.py",
+    "pom.xml"
   ],
   "includeExtensions": [
     ".js", ".jsx", ".ts", ".tsx",
     ".py",
-    ".json", ".yaml", ".yml",
+    ".java", ".kt",
+    ".json", ".yaml", ".yml", ".xml", ".properties", ".gradle",
     ".md",
+    ".css", ".scss", ".html",
     ".sql", ".prisma"
   ],
   "outputFile": "context-bundle.xml",
