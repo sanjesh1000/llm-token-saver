@@ -88,6 +88,20 @@ DEFAULT_CONFIG = {
         "**/*.mp4", "**/*.mov", "**/*.mp3", "**/*.wav",
         "**/*.db", "**/*.sqlite", "**/*.sqlite3",
         "**/.DS_Store",
+        # Java / JVM build output
+        "**/target/**",
+        "**/.gradle/**",
+        "**/*.class",
+        "**/*.jar",
+        "**/*.war",
+        "**/*.ear",
+        "**/dependency-reduced-pom.xml",
+        # React / TS build cache
+        "**/*.tsbuildinfo",
+        # AI assistant / editor rule folders — tool instructions, not app code
+        "**/.cursor/**",
+        "**/.cursorrules",
+        "**/.kiro/**",
         "**/context-bundle.*",
         "**/token-savings-report.md",
         "**/.distill.json",
@@ -102,6 +116,8 @@ DEFAULT_CONFIG = {
     "priorityFiles": [
         "architecture.md",
         "README.md",
+        "pom.xml",
+        "build.gradle",
         "index.ts",
         "index.js",
         "main.py",
@@ -111,7 +127,7 @@ DEFAULT_CONFIG = {
         ".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs",
         ".py", ".go", ".rs", ".java", ".kt", ".c", ".h", ".cpp", ".hpp",
         ".cs", ".rb", ".php", ".swift",
-        ".json", ".yaml", ".yml", ".toml",
+        ".json", ".yaml", ".yml", ".toml", ".xml", ".properties", ".gradle",
         ".md", ".mdx", ".txt",
         ".html", ".css", ".scss",
         ".sql", ".graphql", ".prisma",
@@ -233,7 +249,9 @@ def discover_files(root: Path, cfg: dict) -> list[Path]:
 
 def order_with_priority(files: list[Path], root: Path, priority_files: list[str]) -> list[Path]:
     """Move priority files (matched by filename or relative-path suffix) to the front,
-    preserving the given priority order, then the rest alphabetically."""
+    preserving the given priority order. Ties (e.g. a "pom.xml" priority entry matching
+    both a root aggregator POM and every submodule's POM in a multi-module Maven project)
+    are broken by path depth, so shallower/root-level files sort first, then alphabetically."""
     priority_set = [p.replace("\\", "/") for p in priority_files]
 
     def priority_rank(f: Path) -> int:
@@ -243,7 +261,11 @@ def order_with_priority(files: list[Path], root: Path, priority_files: list[str]
                 return i
         return len(priority_set) + 1
 
-    return sorted(files, key=lambda f: (priority_rank(f), str(f.relative_to(root)).lower()))
+    def sort_key(f: Path):
+        rel = str(f.relative_to(root)).replace("\\", "/")
+        return (priority_rank(f), rel.count("/"), rel.lower())
+
+    return sorted(files, key=sort_key)
 
 
 # --------------------------------------------------------------------------
