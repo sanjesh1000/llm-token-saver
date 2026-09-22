@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<codebase>
+  <file path="architecture.md">
+# Architecture
+This describes the system.
+  </file>
+  <file path="src/index.ts">
+import { foo } from "./foo";
+function add(a, b) {
+    return a + b;
+}
+  </file>
+</codebase>
