@@ -79,8 +79,10 @@ Drop a `.distill.json` (or `.distillrc`, same format) in your project root. If n
     "**/dist/**",
     "**/build/**",
     "**/.venv/**",
+    "**/target/**",
     "**/*.lock",
-    "**/*.png", "**/*.jpg", "**/*.svg"
+    "**/*.png", "**/*.jpg", "**/*.svg",
+    "**/.cursor/**", "**/.cursorrules", "**/.kiro/**"
   ],
   "compressMode": {
     "stripComments": true,
@@ -89,11 +91,13 @@ Drop a `.distill.json` (or `.distillrc`, same format) in your project root. If n
   },
   "maxFileSizeBytes": 150000,
   "priorityFiles": ["architecture.md", "README.md", "src/index.ts"],
-  "includeExtensions": [".js", ".ts", ".py", ".json", ".md"],
+  "includeExtensions": [".js", ".ts", ".jsx", ".tsx", ".py", ".java", ".json", ".md"],
   "outputFile": "context-bundle.xml",
   "reportFile": "token-savings-report.md"
 }
 ```
+
+> This is a trimmed excerpt — the full sample with Java (`.java`, `.xml`, `.gradle`, Maven/Gradle build-output excludes) and React (`.jsx`, `.tsx`, `.css`, `.scss`) coverage lives at [examples/.distill.json](/examples/.distill.json).
 
 ### Field reference
 
@@ -110,6 +114,8 @@ Drop a `.distill.json` (or `.distillrc`, same format) in your project root. If n
 | `reportFile` | string | Default savings-report filename. |
 
 > Distill **always** excludes its own generated files (`.distill.json`, `context-bundle.*`, `token-savings-report.md`) even if your `excludePatterns` doesn't mention them — so re-running it never bundles its own previous output.
+>
+> The default config also excludes AI-assistant rule folders (`.cursor/`, `.cursorrules`, `.kiro/`) since these hold tool-specific instructions rather than application code. `CLAUDE.md` and `.github/copilot-instructions.md` are **not** excluded by default — they're small, human-readable project instructions that are genuinely useful context for the bundle.
 
 ## Usage
 
